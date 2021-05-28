@@ -16,7 +16,6 @@
             padding: 0;
             margin: 0;
         }
-
         #map {
             height: 100vh;
         }
@@ -28,34 +27,71 @@
     <script src="./leaflet.js"></script>
     <script src="./leaflet-geoman.min.js"></script>
     <script src="./leaflet-measure-path.js"></script>
-
     <script>
 
-        var map = L.map('map').setView([0.505, -0.09], 4);
-
+        const map = L.map('map').setView([0.505, -0.09], 8);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        L.Icon.Default.imagePath = "http://";
-        L.Icon.Default.prototype.options.iconUrl = 'leafletjs.com/examples/custom-icons/leaf-green.png';
+
+        const ZoomViewer = L.Control.extend({
+            onAdd: function(){
+
+                const container= L.DomUtil.create('div');
+                const gauge = L.DomUtil.create('div');
+                container.style.minWidth = '200px';
+                container.style.padding = '8px';
+                container.style.background = 'rgba(255,255,255,0.5)';
+                container.style.textAlign = 'left';
+                map.on('zoomstart zoom zoomend', function(ev){
+                    gauge.innerHTML = 'Zoom level: ' + map.getZoom();
+                });
+                container.appendChild(gauge);
+
+                return container;
+            }
+        });
+
+        (new ZoomViewer).addTo(map);
+
+        L.Icon.Default.imagePath = "./images/";
+        L.Icon.Default.prototype.options.iconUrl = 'marker.png';
+        L.Icon.Default.prototype.options.shadowSize = [0,0];
 
         map.pm.addControls({
             position: 'topleft',
         });
+
         function logEvent(e) {
             console.log(e);
         }
 
-        var polygon = L.polygon([[0, 0], [2, 2], [-1, 7]], { pmIgnore: false })
+        const polygon = L.polygon([[0, 0], [2, 2], [-1, 7]], { pmIgnore: false })
             .addTo(map)
             .showMeasurements();
+
         polygon.layerId = "TestId"
         polygon.on("pm:edit", (e) => {
             console.log(e);
-        })
+        });
         polygon.on("pm:remove", (e) => {
             console.log(e.layer.layerId);
-        })
+        });
+
+        const marker = L.marker([0,0]);
+
+
+        map.on("zoomend", ()=>{
+            const currentZoom = map.getZoom();
+            if(currentZoom >= 8) {
+                marker.addTo(map);
+            }
+            else {
+                marker.remove();
+            }
+        });
+
+
     </script>
 </body>
 
