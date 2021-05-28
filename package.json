@@ -1,0 +1,20 @@
+{
+  "name": "leaflet-geoman-tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "leaflet-geoman.min.js",
+  "scripts": {
+    "db": "json-server --watch --port=4000 db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pooriaseto/leaflet-geoman-tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pooriaseto/leaflet-geoman-tools/issues"
+  },
+  "homepage": "https://github.com/pooriaseto/leaflet-geoman-tools#readme"
+}
