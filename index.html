@@ -96,7 +96,20 @@
                 return response.json()
             })
             .then((data) => {
-                const geojson = data.geojson.geometry;
+                const geojson = data.geojson;
+                const shape = L.geoJSON(geojson);
+                shape.addTo(map)
+                shape.eachLayer(function (shapelayer) {
+                    shapelayer.showMeasurements();
+                });
+            });
+
+        fetch("http://localhost:4000/shapes/2")
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                const geojson = data.geojson;
                 const shape = L.geoJSON(geojson);
                 shape.addTo(map)
                 shape.eachLayer(function (shapelayer) {
