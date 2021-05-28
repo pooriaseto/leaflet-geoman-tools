@@ -113,7 +113,9 @@
                 const shape = L.geoJSON(geojson);
                 shape.addTo(map)
                 shape.eachLayer(function (shapelayer) {
-                    shapelayer.showMeasurements();
+                    if (shapelayer.feature.geometry.type !== "Point") {
+                        shapelayer.showMeasurements();
+                    }
                 });
             });
 
